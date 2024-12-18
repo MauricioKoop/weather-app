@@ -4,6 +4,7 @@ const ForecastContainer = styled.div`
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    gap: 20px;
 `;
 
 const DayCard = styled.div`
@@ -12,7 +13,6 @@ const DayCard = styled.div`
     border-radius: 8px;
     padding: 10px;
     text-align: center;
-    margin: 18px;
     flex: 1;
     min-width: 180px;
 `;
