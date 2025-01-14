@@ -1,37 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import { theme } from "./styles/theme";
 import CurrentWeather from "./components/CurrentWeather";
 import WeatherForecast from "./components/WeatherForecast";
 
-const currentWeatherData = {
-  location: "São Paulo",
-  temperature: 13,
-};
 
-const forecastData = [
-  {date: "01/09", minTemp: 10, maxTemp: 28},
-  {date: "02/09", minTemp: 11, maxTemp: 38},
-  {date: "03/09", minTemp: 23, maxTemp: 18},
-  {date: "04/09", minTemp: 13, maxTemp: 24},
-  {date: "05/09", minTemp: 20, maxTemp: 25},
-  {date: "05/09", minTemp: 8, maxTemp: 26},
-  {date: "05/09", minTemp: 11, maxTemp: 27},
-  {date: "05/09", minTemp: 12, maxTemp: 28},
-];
 
-const App = () => (
-  <ThemeProvider theme={theme}>
-    <GlobalStyles/>
-    <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-      <CurrentWeather 
-        location={currentWeatherData.location}
-        temperature={currentWeatherData.temperature}
-      />
-      <WeatherForecast forecast={forecastData}/>
-    </div>
-  </ThemeProvider>
-)
+const App = () => {
+	const [currentWeatherData, setCurrentWeatherData] = useState(null);
+	const [forecastData, setForecastData] = useState([]);
+	const [loading, setLoading] = useState(true);
+	
+	// Aqui serão definidas as chaves da API
+	const API_KEY = 0e503de2b1939e5bb863b9f63a362e42;
+	const lat = -15.7975;
+	const lon = -47.8919;
+
+	useEffect(() => {
+		const fetchWeatherData = async () => {
+			try {
+				const currentWeatherResponse = await fetch(
+					`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+				);
+				const currentWeatherJson = currentWeatherResponse.json();
+				setCurrentWeatherData({
+					location: currentWeatherJson.name,
+					temperature: currentWeatherJson.main.temp
+				});
+
+				// Previsão do tempo 5 dias
+				
+			}
+		}
+	})
+	
+}
 
 export default App;
