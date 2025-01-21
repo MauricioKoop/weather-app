@@ -13,12 +13,13 @@ const App = () => {
 	// Aqui serão definidas as chaves da API
 	const lat = -26.7745146261508;
 	const lon = -48.64422810098111;
-	const API_CONECTION = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=0e503de2b1939e5bb863b9f63a362e42`;
+	const API_CURRENT_WEATHER = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=0e503de2b1939e5bb863b9f63a362e42`;
+	const API_FORECAST = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=0e503de2b1939e5bb863b9f63a362e42`;
 
 	useEffect(() => {
 		const fetchWeatherData = async () => {
 			try {
-				const currentWeatherResponse = await fetch(API_CONECTION);
+				const currentWeatherResponse = await fetch(API_CURRENT_WEATHER);
 				const currentWeatherJson = await currentWeatherResponse.json();
 
 				setCurrentWeatherData({
@@ -27,6 +28,18 @@ const App = () => {
 				});
 
 				// Previsão do tempo 5 dias
+				const forecastResponse = await fetch(API_FORECAST);
+				const forecastJson = await forecastResponse.json();
+				const onlyFiveForecast = forecastJson.list.slice(0, 5)
+				.map((forecast) => ({
+					date: forecast.dt_txt.slice(0,10),
+					minTemp: (forecast.main.temp_min -273.15).toFixed(2),
+					maxTemp: (forecast.main.temp_max -273.15).toFixed(2)
+				}))
+
+				console.log(onlyFiveForecast);
+				setForecastData(onlyFiveForecast);
+
 			}catch (error) {
 				console.error("Erro ao buscar os dados:", error);
 			} finally {
@@ -50,6 +63,8 @@ const App = () => {
 					temperature={currentWeatherData.temperature + " C°"}
 				/>
 			)}
+
+			{forecastData.length > 0 && <WeatherForecast forecast={forecastData} />}
 		</ThemeProvider>
 	)
 }
