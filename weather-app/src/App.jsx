@@ -30,15 +30,15 @@ const App = () => {
 				// Previsão do tempo 5 dias
 				const forecastResponse = await fetch(API_FORECAST);
 				const forecastJson = await forecastResponse.json();
-				const onlyFiveForecast = forecastJson.list.slice(0, 5)
+				const ForecastOnlyFive = forecastJson.list
 				.map((forecast) => ({
 					date: forecast.dt_txt.slice(0,10),
 					minTemp: (forecast.main.temp_min -273.15).toFixed(2),
 					maxTemp: (forecast.main.temp_max -273.15).toFixed(2)
 				}))
 
-				console.log(onlyFiveForecast);
-				setForecastData(onlyFiveForecast);
+				console.log(ForecastOnlyFive);
+				setForecastData(ForecastOnlyFive);
 
 			}catch (error) {
 				console.error("Erro ao buscar os dados:", error);
